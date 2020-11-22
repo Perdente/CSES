@@ -1,40 +1,27 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int mod = 1e9+7;
+#define ll long long
+const int N=1e6+5,mod=1e9+7;
  
-int main()
+int dp[105][N];
+int arr[105];
+ 
+signed main()
 {
-    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    int n,sum;
-    cin>>n>>sum;
-    vector<int>v(n);
-    for(int i=0;i<n;++i)
-    {
-        cin>>v[i];
-    }
-    int dp[n+1][sum+1];
-    memset(dp,0,sizeof(dp));
-    dp[0][0]=1;
-    for(int i=1;i<=n;++i)
-    {
-        for(int j=0;j<=sum;++j)
-        {
-        	dp[i][j]=dp[i-1][j];
-        	if(j>=v[i-1])
-        	{
-        		dp[i][j]+=dp[i][j-v[i-1]];
-        		dp[i][j]%=mod;
-			}
-        }
-    }
-//    for(int i=0;i<=n;++i)
-//    {
-//        for(int j=0;j<=sum;++j)
-//        {
-//            cout<<dp[i][j]<<" ";
-//        }
-//        cout<<endl;
-//    }
-    cout<<dp[n][sum]<<endl;
+	int n,sum;cin>>n>>sum;
+	for(int i=1;i<=n;++i)
+	{
+		cin>>arr[i];
+	}
+	for(int i=1;i<=n;++i)dp[i][0]=1;
+	for(int i=1;i<=n;++i)
+	{
+		for(int x=1;x<=sum;++x)
+		{
+			dp[i][x]=dp[i-1][x] + (x-arr[i]>=0 ? dp[i][x-arr[i]] : 0);
+			dp[i][x]%=mod;
+		}
+	}
+	cout<<dp[n][sum]<<endl;
 	return 0;
 }
