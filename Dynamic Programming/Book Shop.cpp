@@ -1,30 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int mod=1e9+7;
- 
+#define ll long long
+const int N=1005,mx=1e5+5;
+int cost[N],pg[N];
+int dp[N][mx];
 int main()
 {
-	ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-	int n,t;cin>>n>>t;
-	vector<int>pr(n),val(n);
-	for(int &x:pr)cin>>x;
-	for(int &x:val)cin>>x;
-	int dp[n+1][t+1];
-	for(int i=0;i<=n;++i)
+	int n,tot;cin>>n>>tot;
+	for(int i=1;i<=n;++i)cin>>cost[i];
+	for(int i=1;i<=n;++i)cin>>pg[i];
+	
+	for(int i=1;i<=n;++i)
 	{
-		for(int j=0;j<=t;++j)
+		for(int j=1;j<=tot;++j)
 		{
-			if(i==0 or j==0)dp[i][j]=0;
-			else if(j>=pr[i-1])
-			{
-				dp[i][j]=max(dp[i-1][j],val[i-1]+dp[i-1][j-pr[i-1]]);
-			}
-			else
-			{
-				dp[i][j]=dp[i-1][j];
-			}
+			dp[i][j]=max(dp[i-1][j],(j-cost[i]>=0)?pg[i]+dp[i-1][j-cost[i]]:0);
 		}
 	}
-	cout<<dp[n][t]<<endl;
+	cout<<dp[n][tot]<<endl;
 	return 0;
 }
